@@ -2,8 +2,15 @@
 set -e
 
 # Dependency check for Docker and Docker Compose
-command -v docker >/dev/null 2>&1 || { echo >&2 "❌ Docker is not installed. Aborting."; exit 1; }
-command -v docker-compose >/dev/null 2>&1 || { echo >&2 "❌ Docker Compose is not installed. Aborting."; exit 1; }
+command -v docker >/dev/null 2>&1 || { echo "❌ Docker is not installed."; exit 1; }
+
+if command -v docker compose >/dev/null 2>&1; then
+  COMPOSE_CMD="docker compose"
+elif command -v docker-compose >/dev/null 2>&1; then
+  COMPOSE_CMD="docker-compose"
+else
+  echo "❌ Docker Compose is not installed."; exit 1;
+fi
 
 # Generate admin password if it is not set in environment variables or .env
 if [ -z "$MINIO_ROOT_PASSWORD" ]; then
