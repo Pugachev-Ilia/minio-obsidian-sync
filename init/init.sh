@@ -13,6 +13,8 @@ else
 fi
 
 # Generate admin password if it is not set in environment variables or .env
+mkdir -p /secrets
+
 if [ -z "$MINIO_ROOT_PASSWORD" ]; then
   echo "🔐 MINIO_ROOT_PASSWORD not set. Generating random root password..."
   MINIO_ROOT_PASSWORD=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 24)
